@@ -1,10 +1,10 @@
 from pypdf import PdfReader
 
-def load_pdf(file_path: str) -> str:
+def load_pdf(path: str) -> str:
     """
-    Load text from a PDF file.
+    Loads a PDF file and returns all text as a single string.
     """
-    reader = PdfReader(file_path)
+    reader = PdfReader(path)
     text = ""
 
     for page in reader.pages:

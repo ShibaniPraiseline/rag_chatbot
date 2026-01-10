@@ -4,6 +4,10 @@ __pycache__/
 
 # Virtual environment
 venv/
+__pycache__/
+*.pkl
+*.faiss
+.env
 
 # OS files
 .DS_Store

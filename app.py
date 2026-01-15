@@ -24,8 +24,12 @@ chunks = chunk_text(pdf_text)
 
 embedder = Embedder()
 
+
 indexer = VectorIndexer()
-indexer.build_index(chunks)
+indexer.load_index(
+    index_path="vector_store/index.faiss",
+    chunks_path="vector_store/chunks.pkl"
+)
 
 retriever = Retriever(
     index=indexer.index,

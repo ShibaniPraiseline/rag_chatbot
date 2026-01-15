@@ -1,26 +1,20 @@
 import faiss
 import pickle
-from sentence_transformers import SentenceTransformer
 
 class VectorIndexer:
-    def __init__(self, model_name="all-MiniLM-L6-v2"):
-        self.model = SentenceTransformer(model_name)
+    def __init__(self):
         self.index = None
-        self.text_chunks = []
+        self.text_chunks = None
 
-    def build_index(self, chunks: list[str]):
-        embeddings = self.model.encode(chunks, show_progress_bar=True)
-        dimension = embeddings.shape[1]
-
-        self.index = faiss.IndexFlatL2(dimension)
+    # OPTIONAL: only for local index building
+    def build_index(self, embeddings, chunks):
+        dim = embeddings.shape[1]
+        self.index = faiss.IndexFlatL2(dim)
         self.index.add(embeddings)
-
         self.text_chunks = chunks
 
-    def save(self, path="vector_store.pkl"):
-        with open(path, "wb") as f:
-            pickle.dump((self.index, self.text_chunks), f)
-
-    def load(self, path="vector_store.pkl"):
-        with open(path, "rb") as f:
-            self.index, self.text_chunks = pickle.load(f)
+    # ✅ REQUIRED for deployment
+    def load_index(self, index_path, chunks_path):
+        self.index = faiss.read_index(index_path)
+        with open(chunks_path, "rb") as f:
+            self.text_chunks = pickle.load(f)

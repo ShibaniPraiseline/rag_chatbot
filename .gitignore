@@ -9,9 +9,30 @@ __pycache__/
 *.faiss
 .env
 
+# Vector store 
+vector_store/
+data/*.pdf
 # OS files
 .DS_Store
 Thumbs.db
 
 # Model cache
 .cache/
+venv/
+__pycache__/
+*.pyc
+
+vector_store/
+data/*.pdf
+
+.DS_Store
+.env
+venv/
+__pycache__/
+*.pyc
+
+vector_store/
+data/*.pdf
+
+.DS_Store
+.env

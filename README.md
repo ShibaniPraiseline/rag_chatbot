@@ -1,113 +1,116 @@
-# RAG Chatbot using FastAPI and FAISS
+📄 RAG Document Chatbot
 
-A simple Retrieval-Augmented Generation (RAG) system that allows users to query documents and receive context-aware answers using vector search and large language models.
+A Retrieval-Augmented Generation (RAG) based document chatbot that allows users to upload documents and ask questions using semantic search and LLM-based answer generation.
 
-## 📌 Project Overview
+🔧 Tech Stack
 
-This project implements a basic Retrieval-Augmented Generation (RAG) pipeline using Python.  
-It enables users to ask questions over provided documents by retrieving relevant chunks using vector similarity search and generating answers grounded in the retrieved content.
+Backend: FastAPI
 
-## ❓ Problem Statement
+Frontend: Streamlit
 
-Large Language Models (LLMs) often generate incorrect or hallucinated answers when they do not have access to domain-specific knowledge.  
-This project addresses that issue by retrieving relevant information from documents before generating responses, ensuring answers are context-aware and fact-based.
+Vector Store: FAISS
 
-## 🏗️ System Architecture
+Embeddings: Sentence Transformers
 
-The system follows a standard RAG workflow:
+LLM: Ollama (local inference)
 
-1. Documents are loaded and split into smaller chunks  
-2. Each chunk is converted into vector embeddings  
-3. Embeddings are stored in a FAISS vector index  
-4. User queries are embedded and matched against stored vectors  
-5. The most relevant chunks are sent to the language model  
-6. The model generates an answer based on retrieved context  
+Language: Python 3.10+
 
-## 🧩 Architecture Diagram
-
-### Query-Time Flow
-User → FastAPI → FAISS Retriever → Context Chunks → Answer Generator → Response
-
-### Indexing Flow
-Document → Loader → Chunker → Embeddings → FAISS Index
-
-**Flow:**
-
-User Query  
-→ FastAPI Backend  
-→ Vector Retriever (FAISS)  
-→ Relevant Document Chunks  
-→ Answer Generator (LLM)  
-→ Final Response
-
-## 🛠️ Tech Stack
-
-- Python 3.10+
-- FastAPI
-- FAISS
-- Sentence Transformers
-- Uvicorn
-
-## 📂 Project Structure
-
-rag_chatbot/
-├── app.py # FastAPI entry point
+📂 Project Structure
+rag-document-chatbot/
+├── app.py
+├── streamlit_app.py
 ├── ingest/
-│ ├── loader.py # Document loading
-│ ├── chunker.py # Text chunking
-│ └── retriever.py # FAISS-based retrieval
 ├── rag/
-│ └── generator.py # Answer generation
+├── vector_store/
 ├── data/
-│ └── sample.pdf # Example document
 ├── requirements.txt
-└── README.md
+├── README.md
+└── .gitignore
 
+⚙️ Installation & Setup
+1️⃣ Clone Repository
+git clone https://github.com/your-username/rag-document-chatbot.git
+cd rag-document-chatbot
 
-## ⚙️ Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/your-username/rag-chatbot.git
-cd rag-chatbot
-Create and activate a virtual environment:
-
-bash
-Copy code
+2️⃣ Create Virtual Environment
 python -m venv venv
 venv\Scripts\activate   # Windows
-Install dependencies:
 
-bash
-Copy code
+3️⃣ Install Dependencies
 pip install -r requirements.txt
-▶️ Running the Application
-Start the FastAPI server:
 
-bash
-Copy code
+▶️ Run the Application
+Start FastAPI Backend
 uvicorn app:app --reload
-The API will be available at:
+
+
+Backend runs at:
+
 http://127.0.0.1:8000
 
-API documentation (Swagger UI):
-http://127.0.0.1:8000/docs
+Start Streamlit Frontend
+streamlit run streamlit_app.py
 
-🧪 Example Usage
-Provide a document (PDF)
+🧠 How It Works
 
-Ask a question related to the document
+Document Loader loads PDF files
 
-The system retrieves relevant content and generates a grounded response
+Chunker splits text into semantic chunks
 
-🎓 Learning Outcomes
-Understanding of Retrieval-Augmented Generation (RAG)
+Embedder converts chunks into embeddings
 
-Working with vector embeddings and FAISS
+FAISS stores vectors for similarity search
 
-Building APIs using FastAPI
+Retriever fetches relevant context
 
-Structuring a machine learning backend project
+Generator uses LLM to answer user queries
 
-Managing Python virtual environments
+📌 Features
 
+Offline RAG system
+
+Local LLM via Ollama
+
+Fast semantic search
+
+Clean modular architecture
+
+Easy deployment
+
+🎥 Demo
+
+See demo_video.md for demo link and walkthrough.
+
+📌 Future Enhancements
+
+Multi-document upload
+
+Chat history
+
+Hybrid search (BM25 + FAISS)
+
+Cloud deployment (Docker)
+
+👩‍💻 Author
+
+Shibani M – CSE
+AI | NLP | RAG Systems | Backend Development
+
+✅ Deployment Notes (Important)
+
+✔ This WILL work in deployment if:
+
+Ollama is installed on server OR
+
+You replace it with OpenAI / HuggingFace API
+
+FAISS index is rebuilt in production
+
+✔ For cloud:
+
+Use Docker
+
+Replace 127.0.0.1 with service hostname
+
+Disable --reload

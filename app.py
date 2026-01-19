@@ -1,58 +1,29 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-
-from ingest.loader import load_pdf
-from ingest.chunker import chunk_text
 from ingest.indexer import VectorIndexer
+from ingest.embedder import Embedder
 from rag.retriever import Retriever
 from rag.generator import AnswerGenerator
-from ingest.embedder import Embedder
-
-
-
+import pickle
 
 app = FastAPI(title="RAG Chatbot API")
 
-class Query(BaseModel):
-    question: str
+# Load FAISS index
+indexer = VectorIndexer()
+indexer.load_index("vector_store/index.faiss")
 
-# ----------- STARTUP -----------
+# Load chunks
+with open("vector_store/chunks.pkl", "rb") as f:
+    chunks = pickle.load(f)
 
-print("📌 Building vector index...")
-pdf_text = load_pdf("data/sample.pdf")
-chunks = chunk_text(pdf_text)
-
+# Create embedder
 embedder = Embedder()
 
-
-indexer = VectorIndexer()
-indexer.load_index(
-    index_path="vector_store/index.faiss",
-    chunks_path="vector_store/chunks.pkl"
-)
-
-retriever = Retriever(
-    index=indexer.index,
-    text_chunks=indexer.text_chunks,
-    embedder=embedder
-)
+# Create retriever + generator
+retriever = Retriever(indexer.index, chunks, embedder)
 generator = AnswerGenerator()
 
-print("✅ RAG system ready!")
-
-# ----------- API -----------
-
 @app.post("/ask")
-def ask(query: Query):
-    context_chunks = retriever.retrieve(query.question)
-
-    answer = generator.generate(
-        query.question,
-        context_chunks
-    )
-
-    return {
-        "question": query.question,
-        "context": context_chunks,
-        "answer": answer
-    }
+def ask(query: dict):
+    context = retriever.retrieve(query["question"])
+    answer = generator.generate(query["question"], context)
+    return {"answer": answer, "retrieved_context":chunks}

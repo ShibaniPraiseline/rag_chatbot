@@ -25,7 +25,7 @@ if st.button("Get Answer"):
                 st.write(data["answer"])
 
                 with st.expander("📚 Retrieved Context"):
-                    for i, chunk in enumerate(data["context"], 1):
-                        st.markdown(f"**Chunk {i}:** {chunk}")
+                    for i, chunk in enumerate(data["retrieved_context"], 1):
+                       st.write(f"Chunk {i}: {chunk}")
             else:
                 st.error("Backend error")

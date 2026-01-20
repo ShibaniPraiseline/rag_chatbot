@@ -134,7 +134,7 @@ The video follows a structured technical presentation covering:
 
 **Want to connect?**
 - LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/shibani-m-804203317/)
-- Email: your.email@example.com
+- Email: shibani.cse.27@gmail.com
 
 ---
 

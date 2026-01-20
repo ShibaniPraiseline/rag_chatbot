@@ -77,11 +77,15 @@ rag-chatbot/
 ├── utils/
 │   └── load_pdf.py          # PDF text extraction
 │
+├── assets/                  # Screenshots and diagrams
 ├── api.py                   # FastAPI backend
 ├── streamlit_app.py         # Streamlit UI
 ├── requirements.txt
 └── README.md
 ```
+
+![Project Structure](./assets/project_structure.png)
+*Project organization in VS Code*
 
 ## Installation & Setup
 
@@ -117,12 +121,19 @@ pip install -r requirements.txt
 ```bash
 uvicorn api:app --reload
 ```
+
 Backend available at: `http://127.0.0.1:8000`
+
+![FastAPI Running](./assets/uvicorn.png)
+*FastAPI server running successfully*
 
 ### Start Streamlit Frontend
 ```bash
 streamlit run streamlit_app.py
 ```
+
+![Streamlit Running](./assets/streamlit.png)
+*Streamlit application startup*
 
 ## How It Works
 
@@ -136,15 +147,15 @@ streamlit run streamlit_app.py
 ## Screenshots
 
 ### Main Interface
-![Streamlit UI](./assets/streamlit_interface.png)
+![Streamlit UI](./assets/ui_page.png)
 *Clean, intuitive interface for document upload and question answering*
 
 ### Query Results
-![Sample Query Result](./assets/query_result.png)
+![Sample Query Result](./assets/answer.png)
 *Example showing answer generation with retrieved context*
 
 ### Retrieved Context Display
-![Context Visualization](./assets/context_display.png)
+![Context Visualization](./assets/citation.png)
 *Transparent display of source chunks used for answer generation*
 
 ## Deployment Notes

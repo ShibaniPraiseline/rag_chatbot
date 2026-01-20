@@ -107,7 +107,7 @@ This demonstration is designed for:
 
 ## 🔗 Related Resources
 
-- **GitHub Repository:** [rag-document-chatbot](https://github.com/your-username/rag-document-chatbot)
+- **GitHub Repository:** [rag-document-chatbot](https://github.com/ShibaniPraiseline/rag_chatbot)
 - **Full Documentation:** [README.md](./README.md)
 - **Source Code:** Browse implementation details in the repo
 - **Tech Stack Details:** See README for complete dependencies
@@ -129,11 +129,11 @@ The video follows a structured technical presentation covering:
 ## 💬 Questions & Feedback
 
 **Have questions about the implementation?**
-- Open an issue on [GitHub](https://github.com/your-username/rag-document-chatbot/issues)
+
 - Check the [README](./README.md) for detailed setup instructions
 
 **Want to connect?**
-- LinkedIn: [Your LinkedIn Profile](https://linkedin.com/in/your-profile)
+- LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/shibani-m-804203317/)
 - Email: your.email@example.com
 
 ---

@@ -1,177 +1,217 @@
-📄 RAG-Based Document Question Answering Chatbot
+# RAG-Based Document Question Answering Chatbot
 
-🔍 Problem Statement
-Large Language Models (LLMs) are powerful but cannot reliably answer questions about private or custom documents such as PDFs, reports, or internal notes because these documents are not part of their training data. Directly prompting an LLM with an entire document is inefficient, costly, and prone to hallucinations due to context window limitations.
+A production-ready Retrieval-Augmented Generation (RAG) system that enables natural language question answering over PDF documents with high accuracy and minimal hallucinations.
 
-This project solves the problem by building a Retrieval-Augmented Generation (RAG) based chatbot that allows users to ask natural language questions about a document and receive accurate, context-grounded answers.
+## Problem Statement
 
-🎯 Objective
+Large Language Models (LLMs) cannot reliably answer questions about private or custom documents (PDFs, reports, internal notes) as these are not part of their training data. Directly prompting an LLM with entire documents is:
+- **Inefficient** – Large context windows are slow and expensive
+- **Unreliable** – Prone to hallucinations beyond context limits
+- **Impractical** – Cannot scale to large document collections
 
-Enable question answering over PDF documents
+## Solution Overview
 
-Prevent hallucinations by grounding answers in retrieved document context
+This project implements a **Retrieval-Augmented Generation (RAG)** pipeline that:
+1. Retrieves only the most relevant document chunks using vector similarity search
+2. Injects retrieved context into the LLM prompt
+3. Grounds answers strictly in retrieved content to prevent hallucinations
 
-Use modern embedding models and vector search
+### System Architecture
 
-Demonstrate a clean, modular RAG architecture suitable for production
-🧠 Solution Overview (RAG Architecture)
+![RAG Architecture Diagram](./assets/architecture_diagram.png)
 
-This system follows a Retrieval-Augmented Generation (RAG) pipeline:
+```
 PDF Document
    ↓
 Text Extraction
    ↓
-Chunking
+Text Chunking
    ↓
 Embedding Generation
    ↓
 Vector Store (FAISS)
    ↓
-Query Embedding
+Query Embedding → Semantic Retrieval
    ↓
-Semantic Retrieval
-   ↓
-LLM Answer Generation
+Context-Grounded LLM Generation
    ↓
 User Interface
+```
 
-Key Idea
+## Key Features
 
-Instead of sending the entire document to the LLM, the system:
+✅ **Offline RAG System** – Works without internet connectivity  
+✅ **Local LLM Integration** – Uses Ollama for private, cost-free inference  
+✅ **Fast Semantic Search** – FAISS-powered vector similarity  
+✅ **Modular Architecture** – Clean separation of concerns  
+✅ **Production-Ready** – Designed for scalability and deployment  
 
-Retrieves only the most relevant chunks using vector similarity search
+## Tech Stack
 
-Injects those chunks into the LLM prompt
+| Component | Technology |
+|-----------|-----------|
+| Backend | FastAPI |
+| Frontend | Streamlit |
+| Vector Store | FAISS |
+| Embeddings | Sentence Transformers |
+| LLM | Ollama (Local) |
+| Language | Python 3.10+ |
 
-Forces the model to answer only from retrieved context
+## Project Structure
 
-This improves accuracy, efficiency, and trustworthiness.
-
-🏗️ Project Architecture
+```
 rag-chatbot/
 │
 ├── ingest/
-│   ├── embedder.py        # Generates embeddings using SentenceTransformer
-│   ├── indexer.py         # Loads FAISS vector index
+│   ├── embedder.py          # Embedding generation
+│   └── indexer.py           # FAISS index management
 │
 ├── rag/
-│   ├── retriever.py       # Retrieves relevant chunks from FAISS
-│   ├── generator.py      # Generates answers using LLM (Ollama)
+│   ├── retriever.py         # Semantic chunk retrieval
+│   └── generator.py         # LLM answer generation
 │
 ├── vector_store/
-│   ├── index.faiss        # FAISS vector index
-│   ├── chunks.pkl        # Stored text chunks
+│   ├── index.faiss          # FAISS vector index
+│   └── chunks.pkl           # Document chunks
 │
 ├── utils/
-│   ├── load_pdf.py        # PDF text extraction
+│   └── load_pdf.py          # PDF text extraction
 │
-├── api.py                 # FastAPI backend
-├── streamlit_app.py       # Streamlit frontend
+├── api.py                   # FastAPI backend
+├── streamlit_app.py         # Streamlit UI
 ├── requirements.txt
 └── README.md
+```
 
+## Installation & Setup
 
-🔧 Tech Stack
+### Prerequisites
+- Python 3.10 or higher
+- Ollama installed ([Installation Guide](https://ollama.ai))
 
-Backend: FastAPI
-
-Frontend: Streamlit
-
-Vector Store: FAISS
-
-Embeddings: Sentence Transformers
-
-LLM: Ollama (local inference)
-
-Language: Python 3.10+
-
-
-
-⚙️ Installation & Setup
-1️⃣ Clone Repository
+### 1. Clone Repository
+```bash
 git clone https://github.com/your-username/rag-document-chatbot.git
 cd rag-document-chatbot
+```
 
-2️⃣ Create Virtual Environment
+### 2. Create Virtual Environment
+```bash
 python -m venv venv
-venv\Scripts\activate   # Windows
 
-3️⃣ Install Dependencies
+# Windows
+venv\Scripts\activate
+
+# macOS/Linux
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
-▶️ Run the Application
-Start FastAPI Backend
-uvicorn app:app --reload
+## Running the Application
 
+### Start FastAPI Backend
+```bash
+uvicorn api:app --reload
+```
+Backend available at: `http://127.0.0.1:8000`
 
-Backend runs at:
-
-http://127.0.0.1:8000
-
-Start Streamlit Frontend
+### Start Streamlit Frontend
+```bash
 streamlit run streamlit_app.py
+```
 
-🚀 How It Works (Runtime Flow)
+## How It Works
 
-User enters a question in the Streamlit UI
+1. **User Query** – User enters a question in the Streamlit UI
+2. **Query Embedding** – Question is converted to a vector representation
+3. **Semantic Retrieval** – FAISS retrieves top-k relevant chunks
+4. **Context Injection** – Retrieved chunks are added to the LLM prompt
+5. **Answer Generation** – LLM generates a grounded response
+6. **Response Display** – Answer and source context shown to user
 
-Question is sent to FastAPI backend
+## Screenshots
 
-Backend embeds the query
+### Main Interface
+![Streamlit UI](./assets/streamlit_interface.png)
+*Clean, intuitive interface for document upload and question answering*
 
-FAISS retrieves top-k relevant chunks
+### Query Results
+![Sample Query Result](./assets/query_result.png)
+*Example showing answer generation with retrieved context*
 
-Retrieved context is injected into the LLM prompt
+### Retrieved Context Display
+![Context Visualization](./assets/context_display.png)
+*Transparent display of source chunks used for answer generation*
 
-LLM generates a grounded answer
+## Deployment Notes
 
-Answer + retrieved context is shown to the user
+### Local Deployment
+The system works out-of-the-box with Ollama installed locally.
 
-📌 Features
+### Cloud Deployment
 
-Offline RAG system
+**Option 1: Keep Ollama**
+- Install Ollama on server
+- Ensure FAISS index is rebuilt in production environment
 
-Local LLM via Ollama
+**Option 2: Use Managed LLM APIs**
+- Replace Ollama with OpenAI/HuggingFace/Anthropic API
+- Update `generator.py` with API credentials
+- Modify endpoint configurations
 
-Fast semantic search
+**Docker Deployment**
+```bash
+# Build Docker image
+docker build -t rag-chatbot .
 
-Clean modular architecture
+# Run container
+docker run -p 8000:8000 -p 8501:8501 rag-chatbot
+```
 
-Easy deployment
+**Production Checklist:**
+- [ ] Replace `127.0.0.1` with production hostname
+- [ ] Disable `--reload` flag in uvicorn
+- [ ] Set up environment variables for secrets
+- [ ] Configure CORS policies
+- [ ] Implement rate limiting
 
-🎥 Demo
+## Challenges & Learnings
 
-See demo_video.md for demo link and walkthrough.
+### Cloud Service Constraints
+During development, I explored managed LLM platforms including AWS Bedrock and Azure AI. However, free-tier access required credit card verification, and Azure student subscriptions imposed regional and service-level restrictions that limited experimentation.
 
-📌 Future Enhancements
+**Solution:** I opted for locally hosted inference using Ollama, which provided:
+- Unrestricted testing without token limits
+- Faster iteration cycles
+- No dependency on cloud credits
+- Full control over model selection
 
-Multi-document upload
+This approach allowed me to prioritize RAG architecture correctness and system design over cloud provisioning complexity.
 
-Chat history
+## Future Enhancements
 
-Hybrid search (BM25 + FAISS)
+- [ ] Multi-document upload and indexing
+- [ ] Persistent chat history
+- [ ] Hybrid search (BM25 + dense retrieval)
+- [ ] Re-ranking for improved retrieval
+- [ ] Support for multiple file formats (DOCX, TXT, HTML)
+- [ ] Containerized deployment with Docker Compose
+- [ ] User authentication and document permissions
 
-Cloud deployment (Docker)
+## Demo
 
-👩‍💻 Author
+See [demo_video.md](demo_video.md) for a complete walkthrough.
 
-Shibani M – CSE III yr
-AI | NLP | RAG Systems | Backend Development
+## Author
 
-✅ Deployment Notes (Important)
+**Shibani M** – CSE III Year  
+Interests: AI | NLP | RAG Systems | Backend Development
 
-✔ This WILL work in deployment if:
+---
 
-Ollama is installed on server OR
-
-You replace it with OpenAI / HuggingFace API
-
-FAISS index is rebuilt in production
-
-✔ For cloud:
-
-Use Docker
-
-Replace 127.0.0.1 with service hostname
-
-Disable --reload
+**License:** MIT  
+**Contributions:** Issues and pull requests welcome!
